@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLEEM Fashion Store - Premium Fashion Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <style>
+        /* Local Font Awesome Icons */
+        .fa, .fas, .far, .fab {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+        
+        .fa-user:before { content: "👤"; }
+        .fa-lock:before { content: "🔒"; }
+        .fa-shopping-cart:before { content: "🛒"; }
+        .fa-search:before { content: "🔍"; }
+        .fa-heart:before { content: "❤️"; }
+        .fa-star:before { content: "⭐"; }
+        .fa-filter:before { content: "🔽"; }
+        .fa-sort:before { content: "🔢"; }
+        .fa-home:before { content: "🏠"; }
+        .fa-tshirt:before { content: "👕"; }
+        .fa-shoe-prints:before { content: "👠"; }
+        .fa-gem:before { content: "💎"; }
+        .fa-shopping-bag:before { content: "🛍️"; }
+        .fa-user-circle:before { content: "👤"; }
+        .fa-sign-out-alt:before { content: "🚪"; }
+        .fa-crown:before { content: "👑"; }
+        .fa-sparkles:before { content: "✨"; }
+        .fa-truck:before { content: "🚚"; }
+        .fa-credit-card:before { content: "💳"; }
+        .fa-envelope:before { content: "📧"; }
+        .fa-phone:before { content: "📞"; }
+        .fa-map-marker-alt:before { content: "📍"; }
+        .fa-instagram:before { content: "📷"; }
+        .fa-facebook:before { content: "📘"; }
+        .fa-whatsapp:before { content: "📱"; }
+        .fa-bars:before { content: "📱"; }
+        .fa-times:before { content: "❌"; }
+        .fa-plus:before { content: "➕"; }
+        .fa-minus:before { content: "➖"; }
+        .fa-edit:before { content: "✏️"; }
+        .fa-trash:before { content: "🗑️"; }
+        .fa-eye:before { content: "👁"; }
+        .fa-check:before { content: "✅"; }
+        .fa-exclamation-circle:before { content: "⚠️"; }
+        .fa-info-circle:before { content: "ℹ️"; }
+        .fa-arrow-left:before { content: "⬅️"; }
+        .fa-arrow-right:before { content: "➡️"; }
+        .fa-sync:before { content: "🔄"; }
+        .fa-download:before { content: "⬇️"; }
+        .fa-print:before { content: "🖨️"; }
+        .fa-file-invoice:before { content: "🧾"; }
+        .fa-chart-line:before { content: "📈"; }
+        .fa-box:before { content: "📦"; }
+        .fa-users:before { content: "👥"; }
+        .fa-cog:before { content: "⚙️"; }
+        .fa-tachometer-alt:before { content: "📊"; }
+        .fa-clipboard-list:before { content: "📋"; }
+        .fa-calendar:before { content: "📅"; }
+        .fa-camera:before { content: "📷"; }
+        .fa-upload:before { content: "⬆️"; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-gem"></i>
+                    <h1>SLEEM</h1>
+                    <span>Fashion Store</span>
+                </div>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="Cari fashion items...">
+                        <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+                    </div>
+                    <button class="btn-wishlist" onclick="toggleWishlist()">
+                        <i class="fas fa-heart"></i>
+                        <span id="wishlistCount">0</span>
+                    </button>
+                    <button class="btn-cart" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount">0</span>
+                    </button>
+                    <button class="btn-user" onclick="showUserMenu()">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#home" class="nav-link active" onclick="showPage('home')"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="#products" class="nav-link" onclick="showPage('products')"><i class="fas fa-tshirt"></i> Produk</a></li>
+                    <li><a href="#categories" class="nav-link" onclick="showPage('categories')"><i class="fas fa-filter"></i> Kategori</a></li>
+                    <li><a href="#new" class="nav-link" onclick="showPage('new')"><i class="fas fa-sparkles"></i> Baru</a></li>
+                    <li><a href="#sale" class="nav-link" onclick="showPage('sale')"><i class="fas fa-tag"></i> Sale</a></li>
+                    <li><a href="#about" class="nav-link" onclick="showPage('about')"><i class="fas fa-store"></i> Tentang</a></li>
+                    <li><a href="#contact" class="nav-link" onclick="showPage('contact')"><i class="fas fa-phone"></i> Kontak</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h2>✨ Premium Fashion for Modern Women ✨</h2>
+                    <p>Temukan gaya elegan dan trendi dengan koleksi eksklusif SLEEM</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary" onclick="showPage('products')">Shop Now</button>
+                        <button class="btn-secondary" onclick="showPage('new')">New Arrival</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-placeholder">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Categories -->
+            <section class="featured-categories">
+                <div class="container">
+                    <h3>Kategori Populer</h3>
+                    <div class="category-grid">
+                        <div class="category-card" onclick="filterByCategory('dress')">
+                            <div class="category-icon">👗</div>
+                            <h4>Dress</h4>
+                            <p>Elegant & Stylish</p>
+                        </div>
+                        <div class="category-card" onclick="filterByCategory('tops')">
+                            <div class="category-icon">👚</div>
+                            <h4>Tops</h4>
+                            <p>Trendy & Comfortable</p>
+                        </div>
+                        <div class="category-card" onclick="filterByCategory('bottoms')">
+                            <div class="category-icon">👖</div>
+                            <h4>Bottoms</h4>
+                            <p>Modern & Chic</p>
+                        </div>
+                        <div class="category-card" onclick="filterByCategory('accessories')">
+                            <div class="category-icon">💎</div>
+                            <h4>Accessories</h4>
+                            <p>Premium & Unique</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Products -->
+            <section class="featured-products">
+                <div class="container">
+                    <div class="section-header">
+                        <h3>Produk Unggulan</h3>
+                        <a href="#products" onclick="showPage('products')">Lihat Semua →</a>
+                    </div>
+                    <div class="product-grid" id="featuredProducts">
+                        <!-- Featured products will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Promo Banner -->
+            <section class="promo-banner">
+                <div class="container">
+                    <div class="promo-content">
+                        <div class="promo-text">
+                            <h3>🌟 Special Offer 🌟</h3>
+                            <p>Dapatkan diskon 25% untuk pembelian pertama Anda!</p>
+                            <p>Gunakan kode: <strong>SLEEM25</strong></p>
+                        </div>
+                        <button class="btn-primary" onclick="showPage('products')">Shop Now</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
+            <section class="testimonials">
+                <div class="container">
+                    <h3>Apa Kata Customer Kami</h3>
+                    <div class="testimonial-grid">
+                        <div class="testimonial-card">
+                            <div class="testimonial-content">
+                                <p>"Kualitas produk sangat bagus, desain elegan dan nyaman dipakai. Recommended!"</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">👤</div>
+                                <div class="author-info">
+                                    <h4>Sarah Putri</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-content">
+                                <p>"Pelayanan sangat memuaskan, pengiriman cepat dan packing rapi. Love it!"</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">👤</div>
+                                <div class="author-info">
+                                    <h4>Maya Sari</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-content">
+                                <p>"Fashion items yang trendy dan harga terjangkau. Suka banget sama koleksinya!"</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">👤</div>
+                                <div class="author-info">
+                                    <h4>Rina Wijaya</h4>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Products Page -->
+        <div id="productsPage" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h3>Semua Produk</h3>
+                    <div class="filters">
+                        <select id="categoryFilter" onchange="filterProducts()">
+                            <option value="">Semua Kategori</option>
+                            <option value="dress">Dress</option>
+                            <option value="tops">Tops</option>
+                            <option value="bottoms">Bottoms</option>
+                            <option value="accessories">Accessories</option>
+                        </select>
+                        <select id="sortFilter" onchange="sortProducts()">
+                            <option value="name">Nama</option>
+                            <option value="price-low">Harga Terendah</option>
+                            <option value="price-high">Harga Tertinggi</option>
+                            <option value="newest">Terbaru</option>
+                            <option value="popular">Terpopuler</option>
+                        </select>
+                        <select id="sizeFilter" onchange="filterProducts()">
+                            <option value="">Semua Ukuran</option>
+                            <option value="xs">XS</option>
+                            <option value="s">S</option>
+                            <option value="m">M</option>
+                            <option value="l">L</option>
+                            <option value="xl">XL</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="product-grid" id="allProducts">
+                    <!-- All products will be loaded here -->
+                </div>
+                <div class="load-more">
+                    <button class="btn-secondary" onclick="loadMoreProducts()">Load More</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Detail Page -->
+        <div id="productDetailPage" class="page">
+            <div class="container">
+                <div class="product-detail">
+                    <div class="product-gallery">
+                        <div class="main-image">
+                            <div class="image-placeholder" id="mainImage">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                        </div>
+                        <div class="image-thumbnails" id="imageThumbnails">
+                            <!-- Thumbnails will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-breadcrumb">
+                            <a href="#home" onclick="showPage('home')">Beranda</a> /
+                            <a href="#products" onclick="showPage('products')">Produk</a> /
+                            <span id="breadcrumbCategory"></span>
+                        </div>
+                        <h2 id="productName"></h2>
+                        <div class="product-rating">
+                            <div class="stars" id="productRating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span id="reviewCount">(0 reviews)</span>
+                        </div>
+                        <div class="product-price">
+                            <span class="current-price" id="currentPrice"></span>
+                            <span class="original-price" id="originalPrice"></span>
+                            <span class="discount-badge" id="discountBadge"></span>
+                        </div>
+                        <div class="product-meta">
+                            <span class="brand" id="productBrand">SLEEM</span>
+                            <span class="sku" id="productSku"></span>
+                            <span class="availability" id="stockStatus"></span>
+                        </div>
+                        <div class="product-description" id="productDescription"></div>
+                        
+                        <!-- Size Selection -->
+                        <div class="size-selection">
+                            <h4>Pilih Ukuran:</h4>
+                            <div class="size-options" id="sizeOptions">
+                                <!-- Size options will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Color Selection -->
+                        <div class="color-selection">
+                            <h4>Pilih Warna:</h4>
+                            <div class="color-options" id="colorOptions">
+                                <!-- Color options will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Quantity -->
+                        <div class="quantity-selection">
+                            <h4>Jumlah:</h4>
+                            <div class="quantity-control">
+                                <button onclick="decreaseQuantity()"><i class="fas fa-minus"></i></button>
+                                <input type="number" id="quantity" value="1" min="1">
+                                <button onclick="increaseQuantity()"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="product-actions">
+                            <button class="btn-wishlist" onclick="addToWishlist()">
+                                <i class="fas fa-heart"></i> Wishlist
+                            </button>
+                            <button class="btn-cart" onclick="addToCart()">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn-buy" onclick="buyNow()">
+                                <i class="fas fa-shopping-bag"></i> Buy Now
+                            </button>
+                        </div>
+                        
+                        <!-- Product Features -->
+                        <div class="product-features">
+                            <div class="feature">
+                                <i class="fas fa-truck"></i>
+                                <span>Pengiriman Gratis</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-undo"></i>
+                                <span>Pengembalian 7 Hari</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Garansi Kualitas</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Pembayaran Aman</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other placeholder pages -->
+        <div id="categoriesPage" class="page">
+            <div class="container">
+                <h3>Kategori Produk</h3>
+                <div class="category-grid" id="categoryGrid">
+                    <!-- Categories will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="newPage" class="page">
+            <div class="container">
+                <h3>New Arrival</h3>
+                <div class="product-grid" id="newProducts">
+                    <!-- New products will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="salePage" class="page">
+            <div class="container">
+                <h3>Sale Items</h3>
+                <div class="product-grid" id="saleProducts">
+                    <!-- Sale products will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <div id="aboutPage" class="page">
+            <div class="container">
+                <h3>Tentang SLEEM Fashion Store</h3>
+                <div class="about-content">
+                    <p>SLEEM Fashion Store adalah butik fashion premium yang menyediakan koleksi eksklusif untuk wanita modern yang mengutamakan gaya, kualitas, dan kenyamanan.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="contactPage" class="page">
+            <div class="container">
+                <h3>Kontak Kami</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone"></i> +62 812-3456-7890</p>
+                    <p><i class="fas fa-envelope"></i> info@sleemfashion.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-gem"></i>
+                        <h3>SLEEM</h3>
+                        <p>Premium Fashion Boutique</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fas fa-instagram"></i></a>
+                        <a href="#"><i class="fas fa-facebook"></i></a>
+                        <a href="#"><i class="fas fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home" onclick="showPage('home')">Beranda</a></li>
+                        <li><a href="#products" onclick="showPage('products')">Produk</a></li>
+                        <li><a href="#about" onclick="showPage('about')">Tentang</a></li>
+                        <li><a href="#contact" onclick="showPage('contact')">Kontak</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Dapatkan update terbaru dari kami</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Email Anda">
+                        <button>Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 SLEEM Fashion Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- User Menu Modal -->
+    <div id="userMenuModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Akun Saya</h3>
+                <button onclick="closeUserMenu()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="userMenuContent">
+                    <!-- User menu content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">Rp 0</span>
+            </div>
+            <button class="btn-primary" onclick="goToCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Wishlist Sidebar -->
+    <div id="wishlistSidebar" class="wishlist-sidebar">
+        <div class="wishlist-header">
+            <h3>My Wishlist</h3>
+            <button onclick="toggleWishlist()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="wishlist-items" id="wishlistItems">
+            <!-- Wishlist items will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <i class="fas fa-check"></i>
+            <span id="notificationMessage"></span>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - SLEEM Fashion Store</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <style>
+        /* Local Font Awesome Icons */
+        .fa, .fas, .far, .fab {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+        
+        .fa-user:before { content: "👤"; }
+        .fa-lock:before { content: "🔒"; }
+        .fa-phone:before { content: "📞"; }
+        .fa-envelope:before { content: "📧"; }
+        .fa-home:before { content: "🏠"; }
+        .fa-gem:before { content: "💎"; }
+        .fa-heart:before { content: "❤️"; }
+        .fa-check:before { content: "✅"; }
+        .fa-exclamation-circle:before { content: "⚠️"; }
+        .fa-arrow-left:before { content: "⬅️"; }
+        .fa-sparkles:before { content: "✨"; }
+        .fa-map-marker-alt:before { content: "📍"; }
+        .fa-credit-card:before { content: "💳"; }
+        .fa-university:before { content: "🏦"; }
+        .fa-qrcode:before { content: "📱"; }
+        .fa-barcode:before { content: "📊"; }
+        .fa-truck:before { content: "🚚"; }
+        .fa-shopping-cart:before { content: "🛒"; }
+        .fa-times:before { content: "❌"; }
+        .fa-upload:before { content: "⬆️"; }
+        .fa-file-invoice:before { content: "🧾"; }
+        .fa-print:before { content: "🖨️"; }
+        
+        /* Checkout specific styles */
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .checkout-header h1 {
+            color: var(--primary-pink-dark);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .checkout-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--gray-light);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .step.active .step-number {
+            background: var(--gradient-primary);
+            color: var(--white);
+        }
+        
+        .step.completed .step-number {
+            background: var(--success-color);
+            color: var(--white);
+        }
+        
+        .step-line {
+            width: 50px;
+            height: 2px;
+            background: var(--gray-light);
+            margin: 0 1rem;
+        }
+        
+        .step.completed .step-line {
+            background: var(--success-color);
+        }
+        
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .checkout-form {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-section h3 {
+            color: var(--primary-pink-dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .checkout-summary {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 100px;
+        }
+        
+        .checkout-items {
+            margin-bottom: 2rem;
+        }
+        
+        .checkout-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .checkout-item:last-child {
+            border-bottom: none;
+        }
+        
+        .checkout-item-image {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-cream);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-pink);
+        }
+        
+        .checkout-item-info {
+            flex: 1;
+        }
+        
+        .checkout-item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .checkout-item-details {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .checkout-item-price {
+            color: var(--primary-pink);
+            font-weight: 600;
+        }
+        
+        .payment-methods {
+            margin-bottom: 2rem;
+        }
+        
+        .payment-method {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary-pink);
+            background: rgba(255, 105, 180, 0.05);
+        }
+        
+        .payment-method.selected {
+            border-color: var(--primary-pink);
+            background: rgba(255, 105, 180, 0.1);
+        }
+        
+        .payment-method-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .payment-method-icon {
+            font-size: 1.5rem;
+            color: var(--primary-pink);
+        }
+        
+        .payment-method-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .payment-method-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        .bank-account {
+            background: var(--accent-cream);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .bank-account h4 {
+            color: var(--primary-pink-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .bank-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .bank-info-item {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .bank-name {
+            font-weight: 600;
+            color: var(--primary-pink);
+            margin-bottom: 0.5rem;
+        }
+        
+        .account-number {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .account-name {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .barcode-container {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .barcode {
+            width: 100%;
+            height: 60px;
+            background: repeating-linear-gradient(
+                90deg,
+                #000 0px,
+                #000 2px,
+                #fff 2px,
+                #fff 4px,
+                #000 4px,
+                #000 6px,
+                #fff 6px,
+                #fff 8px,
+                #000 8px,
+                #000 10px,
+                #fff 10px,
+                #fff 12px,
+                #000 12px,
+                #000 14px,
+                #fff 14px,
+                #fff 16px,
+                #000 16px,
+                #000 18px,
+                #fff 18px,
+                #fff 20px,
+                #000 20px,
+                #000 22px,
+                #fff 22px,
+                #fff 24px,
+                #000 24px,
+                #000 26px,
+                #fff 26px,
+                #fff 28px,
+                #000 28px,
+                #000 30px,
+                #fff 30px,
+                #fff 32px,
+                #000 32px,
+                #000 34px,
+                #fff 34px,
+                #fff 36px,
+                #000 36px,
+                #000 38px,
+                #fff 38px,
+                #fff 40px,
+                #000 40px,
+                #000 42px,
+                #fff 42px,
+                #fff 44px,
+                #000 44px,
+                #000 46px,
+                #fff 46px,
+                #fff 48px,
+                #000 48px,
+                #000 50px,
+                #fff 50px,
+                #fff 52px,
+                #000 52px,
+                #000 54px,
+                #fff 54px,
+                #fff 56px,
+                #000 56px,
+                #000 58px,
+                #fff 58px,
+                #fff 60px,
+                #000 60px,
+                #000 62px,
+                #fff 62px,
+                #fff 64px,
+                #000 64px,
+                #000 66px,
+                #fff 66px,
+                #fff 68px,
+                #000 68px,
+                #000 70px,
+                #fff 70px,
+                #fff 72px,
+                #000 72px,
+                #000 74px,
+                #fff 74px,
+                #fff 76px,
+                #000 76px,
+                #000 78px,
+                #fff 78px,
+                #fff 80px,
+                #000 80px,
+                #000 82px,
+                #fff 82px,
+                #fff 84px,
+                #000 84px,
+                #000 86px,
+                #fff 86px,
+                #fff 88px,
+                #000 88px,
+                #000 90px,
+                #fff 90px,
+                #fff 92px,
+                #000 92px,
+                #000 94px,
+                #fff 94px,
+                #fff 96px,
+                #000 96px,
+                #000 98px,
+                #fff 98px,
+                #fff 100px,
+                #000 100px,
+                #000 102px,
+                #fff 102px,
+                #fff 104px,
+                #000 104px,
+                #000 106px,
+                #fff 106px,
+                #fff 108px,
+                #000 108px,
+                #000 110px,
+                #fff 110px,
+                #fff 112px,
+                #000 112px,
+                #000 114px,
+                #fff 114px,
+                #fff 116px,
+                #000 116px,
+                #000 118px,
+                #fff 118px,
+                #fff 120px,
+                #000 120px,
+                #000 122px,
+                #fff 122px,
+                #fff 124px,
+                #000 124px,
+                #000 126px,
+                #fff 126px,
+                #fff 128px,
+                #000 128px,
+                #000 130px,
+                #fff 130px,
+                #fff 132px,
+                #000 132px,
+                #000 134px,
+                #fff 134px,
+                #fff 136px,
+                #000 136px,
+                #000 138px,
+                #fff 138px,
+                #fff 140px,
+                #000 140px,
+                #000 142px,
+                #fff 142px,
+                #fff 144px,
+                #000 144px,
+                #000 146px,
+                #fff 146px,
+                #fff 148px,
+                #000 148px,
+                #000 150px,
+                #fff 150px,
+                #fff 152px,
+                #000 152px,
+                #000 154px,
+                #fff 154px,
+                #fff 156px,
+                #000 156px,
+                #000 158px,
+                #fff 158px,
+                #fff 160px,
+                #000 160px,
+                #000 162px,
+                #fff 162px,
+                #fff 164px,
+                #000 164px,
+                #000 166px,
+                #fff 166px,
+                #fff 168px,
+                #000 168px,
+                #000 170px,
+                #fff 170px,
+                #fff 172px,
+                #000 172px,
+                #000 174px,
+                #fff 174px,
+                #fff 176px,
+                #000 176px,
+                #000 178px,
+                #fff 178px,
+                #fff 180px,
+                #000 180px,
+                #000 182px,
+                #fff 182px,
+                #fff 184px,
+                #000 184px,
+                #000 186px,
+                #fff 186px,
+                #fff 188px,
+                #000 188px,
+                #000 190px,
+                #fff 190px,
+                #fff 192px,
+                #000 192px,
+                #000 194px,
+                #fff 194px,
+                #fff 196px,
+                #000 196px,
+                #000 198px,
+                #fff 198px,
+                #fff 200px,
+                #000 200px,
+                #000 202px,
+                #fff 202px,
+                #fff 204px,
+                #000 204px,
+                #000 206px,
+                #fff 206px,
+                #fff 208px,
+                #000 208px,
+                #000 210px,
+                #fff 210px,
+                #fff 212px,
+                #000 212px,
+                #000 214px,
+                #fff 214px,
+                #fff 216px,
+                #000 216px,
+                #000 218px,
+                #fff 218px,
+                #fff 220px,
+                #000 220px,
+                #000 222px,
+                #fff 222px,
+                #fff 224px,
+                #000 224px,
+                #000 226px,
+                #fff 226px,
+                #fff 228px,
+                #000 228px,
+                #000 230px,
+                #fff 230px,
+                #fff 232px,
+                #000 232px,
+                #000 234px,
+                #fff 234px,
+                #fff 236px,
+                #000 236px,
+                #000 238px,
+                #fff 238px,
+                #fff 240px,
+                #000 240px,
+                #000 242px,
+                #fff 242px,
+                #fff 244px,
+                #000 244px,
+                #000 246px,
+                #fff 246px,
+                #fff 248px,
+                #000 248px,
+                #000 250px,
+                #fff 250px,
+                #fff 252px,
+                #000 252px,
+                #000 254px,
+                #fff 254px,
+                #fff 256px,
+                #000 256px,
+                #000 258px,
+                #fff 258px,
+                #fff 260px,
+                #000 260px,
+                #000 262px,
+                #fff 262px,
+                #fff 264px,
+                #000 264px,
+                #000 266px,
+                #fff 266px,
+                #fff 268px,
+                #000 268px,
+                #000 270px,
+                #fff 270px,
+                #fff 272px,
+                #000 272px,
+                #000 274px,
+                #fff 274px,
+                #fff 276px,
+                #000 276px,
+                #000 278px,
+                #fff 278px,
+                #fff 280px,
+                #000 280px,
+                #000 282px,
+                #fff 282px,
+                #fff 284px,
+                #000 284px,
+                #000 286px,
+                #fff 286px,
+                #fff 288px,
+                #000 288px,
+                #000 290px,
+                #fff 290px,
+                #fff 292px,
+                #000 292px,
+                #000 294px,
+                #fff 294px,
+                #fff 296px,
+                #000 296px,
+                #000 298px,
+                #fff 298px,
+                #fff 300px,
+                #000 300px
+            );
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .barcode-number {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        
+        .upload-proof {
+            margin-top: 1rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-pink);
+            background: rgba(255, 105, 180, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--primary-pink);
+            background: rgba(255, 105, 180, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-pink);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .upload-button {
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .uploaded-file {
+            background: var(--accent-cream);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .uploaded-file-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .uploaded-file-icon {
+            font-size: 1.5rem;
+            color: var(--primary-pink);
+        }
+        
+        .uploaded-file-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .uploaded-file-size {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .remove-file {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+        
+        .order-totals {
+            background: var(--accent-cream);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .total-row:last-child {
+            margin-bottom: 0;
+            padding-top: 0.5rem;
+            border-top: 2px solid var(--primary-pink);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-pink-dark);
+        }
+        
+        .checkout-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-back {
+            background: var(--white);
+            color: var(--primary-pink);
+            border: 2px solid var(--primary-pink);
+            border-radius: 25px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-back:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+        }
+        
+        .success-message {
+            background: var(--success-color);
+            color: var(--white);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .checkout-summary {
+                position: static;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .bank-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkout-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-gem"></i>
+                    <h1>SLEEM</h1>
+                    <span>Fashion Store</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-user" onclick="showUserMenu()">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <button class="btn-cart" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Beranda</a></li>
+                    <li><a href="index.html#products"><i class="fas fa-tshirt"></i> Produk</a></li>
+                    <li><a href="index.html#about"><i class="fas fa-store"></i> Tentang</a></li>
+                    <li><a href="index.html#contact"><i class="fas fa-phone"></i> Kontak</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="checkout-container">
+            <!-- Checkout Header -->
+            <div class="checkout-header">
+                <h1>Checkout</h1>
+                <div class="checkout-steps">
+                    <div class="step completed">
+                        <div class="step-number">1</div>
+                        <span>Keranjang</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step active">
+                        <div class="step-number">2</div>
+                        <span>Pengiriman</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <span>Pembayaran</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="success-message">
+                <h3>✅ Pesanan Berhasil Dibuat!</h3>
+                <p>Silakan lakukan pembayaran sesuai dengan informasi yang tersedia.</p>
+            </div>
+
+            <!-- Checkout Content -->
+            <div class="checkout-content">
+                <!-- Checkout Form -->
+                <div class="checkout-form">
+                    <form id="checkoutForm">
+                        <!-- Shipping Information -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-truck"></i> Informasi Pengiriman</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Nama Lengkap *</label>
+                                    <input type="text" class="form-control" id="fullName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nomor HP *</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Alamat Lengkap *</label>
+                                <textarea class="form-control" id="address" rows="3" required></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Kota *</label>
+                                    <input type="text" class="form-control" id="city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Provinsi *</label>
+                                    <input type="text" class="form-control" id="province" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Kode Pos *</label>
+                                <input type="text" class="form-control" id="postalCode" required>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-credit-card"></i> Metode Pembayaran</h3>
+                            <div class="payment-methods">
+                                <div class="payment-method" onclick="selectPaymentMethod('transfer')">
+                                    <div class="payment-method-header">
+                                        <div class="payment-method-icon">
+                                            <i class="fas fa-university"></i>
+                                        </div>
+                                        <div>
+                                            <div class="payment-method-title">Transfer Bank</div>
+                                            <div class="payment-method-description">Transfer ke rekening bank kami</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="payment-method" onclick="selectPaymentMethod('cod')">
+                                    <div class="payment-method-header">
+                                        <div class="payment-method-icon">
+                                            <i class="fas fa-truck"></i>
+                                        </div>
+                                        <div>
+                                            <div class="payment-method-title">Cash on Delivery (COD)</div>
+                                            <div class="payment-method-description">Bayar saat barang sampai</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bank Account Information -->
+                            <div id="bankAccountInfo" class="bank-account" style="display: none;">
+                                <h4>Informasi Rekening</h4>
+                                <div class="bank-info">
+                                    <div class="bank-info-item">
+                                        <div class="bank-name">BCA</div>
+                                        <div class="account-number">1234567890</div>
+                                        <div class="account-name">PT. SLEEM FASHION</div>
+                                    </div>
+                                    <div class="bank-info-item">
+                                        <div class="bank-name">Mandiri</div>
+                                        <div class="account-number">9876543210</div>
+                                        <div class="account-name">PT. SLEEM FASHION</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Barcode -->
+                                <div class="barcode-container">
+                                    <div class="barcode"></div>
+                                    <div class="barcode-number">12345678901234567890</div>
+                                </div>
+                                
+                                <!-- Upload Payment Proof -->
+                                <div class="upload-proof">
+                                    <h4>Upload Bukti Pembayaran</h4>
+                                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('paymentProof').click()">
+                                        <div class="upload-icon">
+                                            <i class="fas fa-upload"></i>
+                                        </div>
+                                        <div class="upload-text">
+                                            <p>Klik atau drag file untuk upload bukti pembayaran</p>
+                                            <p>Maksimal 5MB, format: JPG, PNG, PDF</p>
+                                        </div>
+                                        <button type="button" class="upload-button">Pilih File</button>
+                                    </div>
+                                    <input type="file" id="paymentProof" accept="image/*,.pdf" style="display: none;" onchange="handleFileUpload(event)">
+                                    <div id="uploadedFile" class="uploaded-file" style="display: none;">
+                                        <div class="uploaded-file-info">
+                                            <div class="uploaded-file-icon">
+                                                <i class="fas fa-file-image"></i>
+                                            </div>
+                                            <div>
+                                                <div class="uploaded-file-name" id="fileName"></div>
+                                                <div class="uploaded-file-size" id="fileSize"></div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="remove-file" onclick="removeUploadedFile()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-sticky-note"></i> Catatan</h3>
+                            <div class="form-group">
+                                <textarea class="form-control" id="notes" rows="3" placeholder="Catatan tambahan untuk pesanan Anda..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="checkout-summary">
+                    <h3>Ringkasan Pesanan</h3>
+                    
+                    <!-- Order Items -->
+                    <div class="checkout-items" id="checkoutItems">
+                        <!-- Items will be loaded here -->
+                    </div>
+                    
+                    <!-- Order Totals -->
+                    <div class="order-totals">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="checkoutSubtotal">Rp 0</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Ongkir:</span>
+                            <span id="checkoutShipping">Rp 0</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Total:</span>
+                            <span id="checkoutTotal">Rp 0</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="checkout-actions">
+                        <a href="index.html" class="btn-back">
+                            <i class="fas fa-arrow-left"></i>
+                            Kembali
+                        </a>
+                        <button class="btn-primary" onclick="placeOrder()">
+                            <i class="fas fa-check"></i>
+                            Buat Pesanan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- User Menu Modal -->
+    <div id="userMenuModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Akun Saya</h3>
+                <button onclick="closeUserMenu()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="userMenuContent">
+                    <!-- User menu content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">Rp 0</span>
+            </div>
+            <button class="btn-primary" onclick="window.location.href='checkout.html'">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <i class="fas fa-check"></i>
+            <span id="notificationMessage"></span>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/checkout.js"></script>
+    <script>
+        // Checkout specific functions
+        let selectedPaymentMethod = null;
+        let uploadedPaymentProof = null;
+
+        // Initialize checkout page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCheckoutItems();
+            setupDragAndDrop();
+        });
+
+        // Select payment method
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            event.currentTarget.classList.add('selected');
+            
+            // Show/hide bank account info
+            const bankInfo = document.getElementById('bankAccountInfo');
+            if (method === 'transfer') {
+                bankInfo.style.display = 'block';
+            } else {
+                bankInfo.style.display = 'none';
+            }
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('File terlalu besar. Maksimal 5MB', 'error');
+                    return;
+                }
+                
+                uploadedPaymentProof = file;
+                displayUploadedFile(file);
+            }
+        }
+
+        // Display uploaded file
+        function displayUploadedFile(file) {
+            const uploadedFileDiv = document.getElementById('uploadedFile');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            uploadedFileDiv.style.display = 'flex';
+            
+            // Hide upload area
+            document.getElementById('uploadArea').style.display = 'none';
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Remove uploaded file
+        function removeUploadedFile() {
+            uploadedPaymentProof = null;
+            document.getElementById('paymentProof').value = '';
+            document.getElementById('uploadedFile').style.display = 'none';
+            document.getElementById('uploadArea').style.display = 'block';
+        }
+
+        // Setup drag and drop
+        function setupDragAndDrop() {
+            const uploadArea = document.getElementById('uploadArea');
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.size > 5 * 1024 * 1024) {
+                        showNotification('File terlalu besar. Maksimal 5MB', 'error');
+                        return;
+                    }
+                    
+                    uploadedPaymentProof = file;
+                    displayUploadedFile(file);
+                }
+            });
+        }
+
+        // Place order
+        function placeOrder() {
+            // Validate form
+            const form = document.getElementById('checkoutForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Check payment method
+            if (!selectedPaymentMethod) {
+                showNotification('Silakan pilih metode pembayaran', 'error');
+                return;
+            }
+            
+            // Check payment proof for transfer
+            if (selectedPaymentMethod === 'transfer' && !uploadedPaymentProof) {
+                showNotification('Silakan upload bukti pembayaran', 'error');
+                return;
+            }
+            
+            // Process order
+            if (window.checkoutFunctions) {
+                const formData = {
+                    fullName: document.getElementById('fullName').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    province: document.getElementById('province').value,
+                    postalCode: document.getElementById('postalCode').value,
+                    paymentMethod: selectedPaymentMethod,
+                    notes: document.getElementById('notes').value,
+                    paymentProof: uploadedPaymentProof ? uploadedPaymentProof.name : null
+                };
+                
+                // Create order
+                const order = window.checkoutFunctions.createOrder(formData);
+                
+                // Save order
+                window.checkoutFunctions.saveOrder(order);
+                
+                // Show success message
+                document.getElementById('successMessage').classList.add('show');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Clear cart
+                if (window.cartFunctions) {
+                    window.cartFunctions.clearCart();
+                }
+                
+                // Show notification
+                showNotification('Pesanan berhasil dibuat! Silakan lakukan pembayaran.');
+            }
+        }
+
+        // Load checkout items
+        function loadCheckoutItems() {
+            if (window.checkoutFunctions) {
+                window.checkoutFunctions.loadCheckoutItems();
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            if (notification && messageElement) {
+                messageElement.textContent = message;
+                notification.className = 'notification';
+                
+                if (type === 'error') {
+                    notification.style.background = 'var(--danger-color)';
+                } else if (type === 'warning') {
+                    notification.style.background = 'var(--warning-color)';
+                } else {
+                    notification.style.background = 'var(--success-color)';
+                }
+                
+                notification.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        // Global functions
+        window.showUserMenu = function() {
+            const modal = document.getElementById('userMenuModal');
+            modal.style.display = 'flex';
+            if (window.authFunctions) {
+                window.authFunctions.updateUserMenu();
+            }
+        };
+
+        window.closeUserMenu = function() {
+            const modal = document.getElementById('userMenuModal');
+            modal.style.display = 'none';
+        };
+
+        window.toggleCart = function() {
+            const cartSidebar = document.getElementById('cartSidebar');
+            cartSidebar.classList.toggle('active');
+        };
+    </script>
+</body>
+</html>

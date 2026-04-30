@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SLEEM Fashion Store</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <style>
+        /* Local Font Awesome Icons */
+        .fa, .fas, .far, .fab {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+        
+        .fa-user:before { content: "👤"; }
+        .fa-lock:before { content: "🔒"; }
+        .fa-phone:before { content: "📞"; }
+        .fa-envelope:before { content: "📧"; }
+        .fa-home:before { content: "🏠"; }
+        .fa-gem:before { content: "💎"; }
+        .fa-heart:before { content: "❤️"; }
+        .fa-check:before { content: "✅"; }
+        .fa-exclamation-circle:before { content: "⚠️"; }
+        .fa-arrow-left:before { content: "⬅️"; }
+        .fa-sparkles:before { content: "✨"; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-gem"></i>
+                    <h1>SLEEM</h1>
+                    <span>Fashion Store</span>
+                </div>
+                <p>Login ke akun Anda</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-phone"></i>
+                        Nomor HP / WhatsApp
+                    </label>
+                    <input type="tel" class="form-control" id="phone" placeholder="0812-3456-7890" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <input type="password" class="form-control" id="password" placeholder="Masukkan password" required>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Ingat saya</span>
+                    </label>
+                    <a href="#" class="forgot-password">Lupa password?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-full">
+                    <i class="fas fa-user"></i>
+                    Login
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                <p>Belum punya akun? <a href="register.html">Daftar sekarang</a></p>
+                <div class="social-login">
+                    <p>Atau login dengan:</p>
+                    <div class="social-buttons">
+                        <button class="btn-social btn-google">
+                            <span>G</span> Google
+                        </button>
+                        <button class="btn-social btn-facebook">
+                            <span>f</span> Facebook
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="back-to-home">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <i class="fas fa-check"></i>
+            <span id="notificationMessage"></span>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>
