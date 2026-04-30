@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Management - SLEEM Fashion Store</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <style>
+        /* Admin specific styles */
+        .fa, .fas, .far, .fab {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+        
+        .fa-tachometer-alt:before { content: "📊"; }
+        .fa-box:before { content: "📦"; }
+        .fa-shopping-cart:before { content: "🛒"; }
+        .fa-users:before { content: "👥"; }
+        .fa-chart-line:before { content: "📈"; }
+        .fa-cog:before { content: "⚙️"; }
+        .fa-sign-out-alt:before { content: "🚪"; }
+        .fa-user:before { content: "👤"; }
+        .fa-plus:before { content: "➕"; }
+        .fa-edit:before { content: "✏️"; }
+        .fa-trash:before { content: "🗑️"; }
+        .fa-eye:before { content: "👁"; }
+        .fa-search:before { content: "🔍"; }
+        .fa-filter:before { content: "🔽"; }
+        .fa-download:before { content: "⬇️"; }
+        .fa-print:before { content: "🖨️"; }
+        .fa-file-invoice:before { content: "🧾"; }
+        .fa-calendar:before { content: "📅"; }
+        .fa-clock:before { content: "🕐"; }
+        .fa-check:before { content: "✅"; }
+        .fa-times:before { content: "❌"; }
+        .fa-exclamation-circle:before { content: "⚠️"; }
+        .fa-info-circle:before { content: "ℹ️"; }
+        .fa-home:before { content: "🏠"; }
+        .fa-tshirt:before { content: "👕"; }
+        .fa-shoe-prints:before { content: "👠"; }
+        .fa-gem:before { content: "💎"; }
+        .fa-shopping-bag:before { content: "🛍️"; }
+        .fa-truck:before { content: "🚚"; }
+        .fa-credit-card:before { content: "💳"; }
+        .fa-envelope:before { content: "📧"; }
+        .fa-phone:before { content: "📞"; }
+        .fa-map-marker-alt:before { content: "📍"; }
+        .fa-camera:before { content: "📷"; }
+        .fa-upload:before { content: "⬆️"; }
+        .fa-warehouse:before { content: "🏪"; }
+        .fa-tag:before { content: "🏷️"; }
+        .fa-percentage:before { content: "📊"; }
+        
+        :root {
+            --admin-primary: #e91e63;
+            --admin-secondary: #9c27b0;
+            --admin-success: #4caf50;
+            --admin-warning: #ff9800;
+            --admin-danger: #f44336;
+            --admin-info: #2196f3;
+            --admin-dark: #212121;
+            --admin-light: #f5f5f5;
+            --admin-sidebar: #263238;
+            --admin-sidebar-text: #eceff1;
+        }
+        
+        body {
+            background: var(--admin-light);
+        }
+        
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background: var(--admin-sidebar);
+            color: var(--admin-sidebar-text);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .admin-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .admin-logo i {
+            font-size: 2rem;
+            color: var(--admin-primary);
+        }
+        
+        .admin-logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+        }
+        
+        .admin-logo span {
+            font-size: 0.75rem;
+            color: var(--admin-sidebar-text);
+            opacity: 0.8;
+        }
+        
+        .admin-nav {
+            padding: 1rem 0;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 0.25rem;
+        }
+        
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--admin-sidebar-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--admin-primary);
+        }
+        
+        .admin-nav a.active {
+            background: var(--admin-primary);
+            color: var(--white);
+        }
+        
+        .admin-main {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+        
+        .admin-topbar {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .admin-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--admin-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .admin-user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--admin-dark);
+            margin: 0;
+        }
+        
+        .admin-user-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-admin {
+            background: var(--admin-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-admin:hover {
+            background: var(--admin-secondary);
+            transform: translateY(-2px);
+        }
+        
+        .admin-content {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .content-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--admin-dark);
+            margin: 0;
+        }
+        
+        .content-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-primary-admin {
+            background: var(--admin-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary-admin:hover {
+            background: var(--admin-secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary-admin {
+            background: var(--white);
+            color: var(--admin-primary);
+            border: 2px solid var(--admin-primary);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-secondary-admin:hover {
+            background: var(--admin-primary);
+            color: var(--white);
+        }
+        
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filters select,
+        .filters input {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--white);
+            font-size: 0.875rem;
+        }
+        
+        .filters input {
+            flex: 1;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-table th {
+            background: var(--admin-light);
+            font-weight: 600;
+            color: var(--admin-dark);
+        }
+        
+        .admin-table tr:hover {
+            background: rgba(233, 30, 99, 0.05);
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.active {
+            background: var(--admin-success);
+            color: var(--white);
+        }
+        
+        .status-badge.inactive {
+            background: var(--admin-danger);
+            color: var(--white);
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-action {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-action:hover {
+            background: var(--admin-light);
+        }
+        
+        .btn-action.edit { color: var(--admin-info); }
+        .btn-action.delete { color: var(--admin-danger); }
+        .btn-action.view { color: var(--admin-success); }
+        
+        .product-image {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-cream);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-pink);
+        }
+        
+        .stock-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stock-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .stock-indicator.high { background: var(--admin-success); }
+        .stock-indicator.medium { background: var(--admin-warning); }
+        .stock-indicator.low { background: var(--admin-danger); }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--white);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination button:hover {
+            background: var(--admin-primary);
+            color: var(--white);
+            border-color: var(--admin-primary);
+        }
+        
+        .pagination button.active {
+            background: var(--admin-primary);
+            color: var(--white);
+            border-color: var(--admin-primary);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--admin-dark);
+            margin: 0;
+        }
+        
+        .modal-header button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--admin-dark);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.875rem;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--admin-primary);
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+        
+        .image-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .image-upload:hover {
+            border-color: var(--admin-primary);
+            background: rgba(233, 30, 99, 0.05);
+        }
+        
+        .image-upload-icon {
+            font-size: 3rem;
+            color: var(--admin-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-main {
+                margin-left: 0;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-header">
+                <div class="admin-logo">
+                    <i class="fas fa-gem"></i>
+                    <div>
+                        <h1>SLEEM</h1>
+                        <span>Admin Panel</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="products.html" class="active"><i class="fas fa-box"></i> Produk</a></li>
+                    <li><a href="stock.html"><i class="fas fa-warehouse"></i> Stok</a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Pesanan</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customer</a></li>
+                    <li><a href="reports.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
+                    <li><a href="invoice.html"><i class="fas fa-file-invoice"></i> Invoice</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Top Bar -->
+            <div class="admin-topbar">
+                <div class="admin-user">
+                    <div class="admin-user-avatar">A</div>
+                    <div class="admin-user-info">
+                        <h4>Administrator</h4>
+                        <p>admin@sleem.com</p>
+                    </div>
+                </div>
+                <div class="admin-actions">
+                    <button class="btn-admin" onclick="window.open('../index.html', '_blank')">
+                        <i class="fas fa-home"></i> View Store
+                    </button>
+                    <button class="btn-admin" onclick="adminLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Products Management -->
+            <div class="admin-content">
+                <div class="content-header">
+                    <h2>Manajemen Produk</h2>
+                    <div class="content-actions">
+                        <button class="btn-secondary-admin" onclick="exportProducts()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="btn-primary-admin" onclick="showAddProductModal()">
+                            <i class="fas fa-plus"></i> Tambah Produk
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filters">
+                    <input type="text" placeholder="Cari produk..." id="productSearch" onkeyup="searchProducts()">
+                    <select id="categoryFilter" onchange="filterProducts()">
+                        <option value="">Semua Kategori</option>
+                        <option value="dress">Dress</option>
+                        <option value="tops">Tops</option>
+                        <option value="bottoms">Bottoms</option>
+                        <option value="accessories">Accessories</option>
+                    </select>
+                    <select id="statusFilter" onchange="filterProducts()">
+                        <option value="">Semua Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    <select id="stockFilter" onchange="filterProducts()">
+                        <option value="">Semua Stok</option>
+                        <option value="high">Stok Tinggi (>20)</option>
+                        <option value="medium">Stok Sedang (10-20)</option>
+                        <option value="low">Stok Rendah (<10)</option>
+                    </select>
+                </div>
+                
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Nama Produk</th>
+                            <th>Kategori</th>
+                            <th>Harga</th>
+                            <th>Stok</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTable">
+                        <!-- Products will be loaded here -->
+                    </tbody>
+                </table>
+                
+                <div class="pagination">
+                    <button onclick="previousPage()">Previous</button>
+                    <button class="active">1</button>
+                    <button onclick="nextPage()">Next</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Add/Edit Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Tambah Produk</h3>
+                <button onclick="closeProductModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="productForm">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nama Produk *</label>
+                            <input type="text" id="productName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Kategori *</label>
+                            <select id="productCategory" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="dress">Dress</option>
+                                <option value="tops">Tops</option>
+                                <option value="bottoms">Bottoms</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Harga *</label>
+                            <input type="number" id="productPrice" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Harga Asli</label>
+                            <input type="number" id="productOriginalPrice">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Stok *</label>
+                            <input type="number" id="productStock" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Diskon (%)</label>
+                            <input type="number" id="productDiscount" min="0" max="100">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Deskripsi</label>
+                        <textarea id="productDescription" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ukuran (pisahkan dengan koma)</label>
+                        <input type="text" id="productSizes" placeholder="xs, s, m, l, xl">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Warna (pisahkan dengan koma)</label>
+                        <input type="text" id="productColors" placeholder="pink, red, blue">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>SKU</label>
+                        <input type="text" id="productSku" placeholder="SLM-PRD-001">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Gambar Produk</label>
+                        <div class="image-upload" onclick="document.getElementById('productImage').click()">
+                            <div class="image-upload-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <p>Klik untuk upload gambar</p>
+                            <p style="font-size: 0.875rem; color: var(--text-secondary);">Format: JPG, PNG, maksimal 5MB</p>
+                        </div>
+                        <input type="file" id="productImage" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="productStatus">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tags (pisahkan dengan koma)</label>
+                            <input type="text" id="productTags" placeholder="elegant, casual, formal">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary-admin" onclick="closeProductModal()">Batal</button>
+                    <button type="submit" class="btn-primary-admin">Simpan Produk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <i class="fas fa-check"></i>
+            <span id="notificationMessage"></span>
+        </div>
+    </div>
+    
+    <script>
+        // Products Management JavaScript
+        let currentPage = 1;
+        let products = [];
+        let editingProductId = null;
+        
+        // Initialize Products Page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductsFromStorage();
+            loadProductsTable();
+            setupProductForm();
+        });
+        
+        // Load products from localStorage
+        function loadProductsFromStorage() {
+            const saved = localStorage.getItem('sleemProducts');
+            if (saved) {
+                products = JSON.parse(saved);
+            } else {
+                // Demo products
+                products = [
+                    {
+                        id: 1,
+                        name: 'Elegant Pink Dress',
+                        category: 'dress',
+                        price: 450000,
+                        originalPrice: 650000,
+                        discount: 30,
+                        stock: 15,
+                        sizes: ['xs', 's', 'm', 'l', 'xl'],
+                        colors: ['pink', 'rose', 'coral'],
+                        description: 'Beautiful pink dress perfect for special occasions.',
+                        image: '👗',
+                        brand: 'SLEEM',
+                        sku: 'SLM-DRS-001',
+                        status: 'active',
+                        tags: ['elegant', 'formal', 'party']
+                    },
+                    {
+                        id: 2,
+                        name: 'Floral Summer Top',
+                        category: 'tops',
+                        price: 280000,
+                        originalPrice: 350000,
+                        discount: 20,
+                        stock: 25,
+                        sizes: ['s', 'm', 'l', 'xl'],
+                        colors: ['white', 'pink', 'blue'],
+                        description: 'Light and comfortable summer top with beautiful floral pattern.',
+                        image: '👚',
+                        brand: 'SLEEM',
+                        sku: 'SLM-TOP-002',
+                        status: 'active',
+                        tags: ['summer', 'casual', 'floral']
+                    }
+                ];
+            }
+        }
+        
+        // Load products table
+        function loadProductsTable() {
+            const tbody = document.getElementById('productsTable');
+            tbody.innerHTML = '';
+            
+            products.forEach(product => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>
+                        <div class="product-image">${product.image}</div>
+                    </td>
+                    <td>
+                        <strong>${product.name}</strong>
+                        <br>
+                        <small>${product.sku}</small>
+                    </td>
+                    <td>${product.category}</td>
+                    <td>
+                        Rp ${product.price.toLocaleString('id-ID')}
+                        ${product.discount > 0 ? `<br><small><s>Rp ${product.originalPrice.toLocaleString('id-ID')}</s></small>` : ''}
+                    </td>
+                    <td>
+                        <div class="stock-status">
+                            <div class="stock-indicator ${getStockStatus(product.stock)}"></div>
+                            ${product.stock}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge ${product.status}">${product.status}</span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-action view" onclick="viewProduct(${product.id})" title="View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action edit" onclick="editProduct(${product.id})" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-action delete" onclick="deleteProduct(${product.id})" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+        
+        // Get stock status
+        function getStockStatus(stock) {
+            if (stock > 20) return 'high';
+            if (stock >= 10) return 'medium';
+            return 'low';
+        }
+        
+        // Setup product form
+        function setupProductForm() {
+            const form = document.getElementById('productForm');
+            form.addEventListener('submit', handleProductSubmit);
+        }
+        
+        // Show add product modal
+        function showAddProductModal() {
+            editingProductId = null;
+            document.getElementById('modalTitle').textContent = 'Tambah Produk';
+            document.getElementById('productForm').reset();
+            document.getElementById('productModal').style.display = 'flex';
+        }
+        
+        // Edit product
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                editingProductId = productId;
+                document.getElementById('modalTitle').textContent = 'Edit Produk';
+                
+                // Fill form with product data
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productOriginalPrice').value = product.originalPrice || '';
+                document.getElementById('productStock').value = product.stock;
+                document.getElementById('productDiscount').value = product.discount || 0;
+                document.getElementById('productDescription').value = product.description || '';
+                document.getElementById('productSizes').value = product.sizes ? product.sizes.join(', ') : '';
+                document.getElementById('productColors').value = product.colors ? product.colors.join(', ') : '';
+                document.getElementById('productSku').value = product.sku || '';
+                document.getElementById('productStatus').value = product.status;
+                document.getElementById('productTags').value = product.tags ? product.tags.join(', ') : '';
+                
+                document.getElementById('productModal').style.display = 'flex';
+            }
+        }
+        
+        // View product
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                alert(`Product Details:\n\nName: ${product.name}\nCategory: ${product.category}\nPrice: Rp ${product.price.toLocaleString('id-ID')}\nStock: ${product.stock}\nStatus: ${product.status}\n\nDescription: ${product.description || 'No description'}`);
+            }
+        }
+        
+        // Delete product
+        function deleteProduct(productId) {
+            if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+                products = products.filter(p => p.id !== productId);
+                saveProductsToStorage();
+                loadProductsTable();
+                showNotification('Produk berhasil dihapus');
+            }
+        }
+        
+        // Handle product form submit
+        function handleProductSubmit(e) {
+            e.preventDefault();
+            
+            const productData = {
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                originalPrice: parseFloat(document.getElementById('productOriginalPrice').value) || 0,
+                stock: parseInt(document.getElementById('productStock').value),
+                discount: parseFloat(document.getElementById('productDiscount').value) || 0,
+                description: document.getElementById('productDescription').value,
+                sizes: document.getElementById('productSizes').value.split(',').map(s => s.trim()).filter(s => s),
+                colors: document.getElementById('productColors').value.split(',').map(c => c.trim()).filter(c => c),
+                sku: document.getElementById('productSku').value || `SLM-${Date.now()}`,
+                status: document.getElementById('productStatus').value,
+                tags: document.getElementById('productTags').value.split(',').map(t => t.trim()).filter(t => t),
+                image: '👗', // Default emoji
+                brand: 'SLEEM',
+                addedDate: new Date().toISOString().split('T')[0]
+            };
+            
+            if (editingProductId) {
+                // Update existing product
+                const index = products.findIndex(p => p.id === editingProductId);
+                if (index > -1) {
+                    products[index] = { ...products[index], ...productData };
+                    showNotification('Produk berhasil diperbarui');
+                }
+            } else {
+                // Add new product
+                productData.id = Date.now();
+                products.push(productData);
+                showNotification('Produk berhasil ditambahkan');
+            }
+            
+            saveProductsToStorage();
+            loadProductsTable();
+            closeProductModal();
+        }
+        
+        // Close product modal
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+            document.getElementById('productForm').reset();
+            editingProductId = null;
+        }
+        
+        // Handle image upload
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('File terlalu besar. Maksimal 5MB', 'error');
+                    return;
+                }
+                
+                // In a real app, you would upload the file to a server
+                // For now, we'll just show a notification
+                showNotification('Gambar berhasil diupload');
+            }
+        }
+        
+        // Search products
+        function searchProducts() {
+            const searchTerm = document.getElementById('productSearch').value.toLowerCase();
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm) ||
+                product.sku.toLowerCase().includes(searchTerm)
+            );
+            
+            displayProducts(filteredProducts);
+        }
+        
+        // Filter products
+        function filterProducts() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const stockFilter = document.getElementById('stockFilter').value;
+            
+            let filteredProducts = products;
+            
+            if (categoryFilter) {
+                filteredProducts = filteredProducts.filter(p => p.category === categoryFilter);
+            }
+            
+            if (statusFilter) {
+                filteredProducts = filteredProducts.filter(p => p.status === statusFilter);
+            }
+            
+            if (stockFilter) {
+                filteredProducts = filteredProducts.filter(p => {
+                    switch(stockFilter) {
+                        case 'high': return p.stock > 20;
+                        case 'medium': return p.stock >= 10 && p.stock <= 20;
+                        case 'low': return p.stock < 10;
+                        default: return true;
+                    }
+                });
+            }
+            
+            displayProducts(filteredProducts);
+        }
+        
+        // Display products
+        function displayProducts(productsToDisplay) {
+            const tbody = document.getElementById('productsTable');
+            tbody.innerHTML = '';
+            
+            productsToDisplay.forEach(product => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>
+                        <div class="product-image">${product.image}</div>
+                    </td>
+                    <td>
+                        <strong>${product.name}</strong>
+                        <br>
+                        <small>${product.sku}</small>
+                    </td>
+                    <td>${product.category}</td>
+                    <td>
+                        Rp ${product.price.toLocaleString('id-ID')}
+                        ${product.discount > 0 ? `<br><small><s>Rp ${product.originalPrice.toLocaleString('id-ID')}</s></small>` : ''}
+                    </td>
+                    <td>
+                        <div class="stock-status">
+                            <div class="stock-indicator ${getStockStatus(product.stock)}"></div>
+                            ${product.stock}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge ${product.status}">${product.status}</span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-action view" onclick="viewProduct(${product.id})" title="View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action edit" onclick="editProduct(${product.id})" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-action delete" onclick="deleteProduct(${product.id})" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+        
+        // Export products
+        function exportProducts() {
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Name,Category,Price,Stock,Status,SKU\n"
+                + products.map(p => `${p.name},${p.category},${p.price},${p.stock},${p.status},${p.sku}`).join("\n");
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "products_export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Products exported successfully');
+        }
+        
+        // Save products to localStorage
+        function saveProductsToStorage() {
+            localStorage.setItem('sleemProducts', JSON.stringify(products));
+        }
+        
+        // Pagination
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadProductsTable();
+            }
+        }
+        
+        function nextPage() {
+            currentPage++;
+            loadProductsTable();
+        }
+        
+        // Admin logout
+        function adminLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../login.html';
+            }
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            if (notification && messageElement) {
+                messageElement.textContent = message;
+                notification.className = 'notification';
+                
+                if (type === 'error') {
+                    notification.style.background = 'var(--admin-danger)';
+                } else if (type === 'warning') {
+                    notification.style.background = 'var(--admin-warning)';
+                } else {
+                    notification.style.background = 'var(--admin-success)';
+                }
+                
+                notification.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

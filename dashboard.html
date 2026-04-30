@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SLEEM Fashion Store</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <style>
+        /* Admin specific styles */
+        .fa, .fas, .far, .fab {
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+        
+        .fa-tachometer-alt:before { content: "📊"; }
+        .fa-box:before { content: "📦"; }
+        .fa-shopping-cart:before { content: "🛒"; }
+        .fa-users:before { content: "👥"; }
+        .fa-chart-line:before { content: "📈"; }
+        .fa-cog:before { content: "⚙️"; }
+        .fa-sign-out-alt:before { content: "🚪"; }
+        .fa-user:before { content: "👤"; }
+        .fa-plus:before { content: "➕"; }
+        .fa-edit:before { content: "✏️"; }
+        .fa-trash:before { content: "🗑️"; }
+        .fa-eye:before { content: "👁"; }
+        .fa-search:before { content: "🔍"; }
+        .fa-filter:before { content: "🔽"; }
+        .fa-download:before { content: "⬇️"; }
+        .fa-print:before { content: "🖨️"; }
+        .fa-file-invoice:before { content: "🧾"; }
+        .fa-calendar:before { content: "📅"; }
+        .fa-clock:before { content: "🕐"; }
+        .fa-check:before { content: "✅"; }
+        .fa-times:before { content: "❌"; }
+        .fa-exclamation-circle:before { content: "⚠️"; }
+        .fa-info-circle:before { content: "ℹ️"; }
+        .fa-home:before { content: "🏠"; }
+        .fa-tshirt:before { content: "👕"; }
+        .fa-shoe-prints:before { content: "👠"; }
+        .fa-gem:before { content: "💎"; }
+        .fa-shopping-bag:before { content: "🛍️"; }
+        .fa-truck:before { content: "🚚"; }
+        .fa-credit-card:before { content: "💳"; }
+        .fa-envelope:before { content: "📧"; }
+        .fa-phone:before { content: "📞"; }
+        .fa-map-marker-alt:before { content: "📍"; }
+        
+        :root {
+            --admin-primary: #e91e63;
+            --admin-secondary: #9c27b0;
+            --admin-success: #4caf50;
+            --admin-warning: #ff9800;
+            --admin-danger: #f44336;
+            --admin-info: #2196f3;
+            --admin-dark: #212121;
+            --admin-light: #f5f5f5;
+            --admin-sidebar: #263238;
+            --admin-sidebar-text: #eceff1;
+        }
+        
+        body {
+            background: var(--admin-light);
+        }
+        
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .admin-sidebar {
+            width: 250px;
+            background: var(--admin-sidebar);
+            color: var(--admin-sidebar-text);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .admin-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .admin-logo i {
+            font-size: 2rem;
+            color: var(--admin-primary);
+        }
+        
+        .admin-logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+        }
+        
+        .admin-logo span {
+            font-size: 0.75rem;
+            color: var(--admin-sidebar-text);
+            opacity: 0.8;
+        }
+        
+        .admin-nav {
+            padding: 1rem 0;
+        }
+        
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .admin-nav li {
+            margin-bottom: 0.25rem;
+        }
+        
+        .admin-nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--admin-sidebar-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .admin-nav a:hover,
+        .admin-nav a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--admin-primary);
+        }
+        
+        .admin-nav a.active {
+            background: var(--admin-primary);
+            color: var(--white);
+        }
+        
+        .admin-main {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+        
+        .admin-topbar {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .admin-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--admin-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .admin-user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--admin-dark);
+            margin: 0;
+        }
+        
+        .admin-user-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-admin {
+            background: var(--admin-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-admin:hover {
+            background: var(--admin-secondary);
+            transform: translateY(-2px);
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-card.primary::before { background: var(--admin-primary); }
+        .stat-card.success::before { background: var(--admin-success); }
+        .stat-card.warning::before { background: var(--admin-warning); }
+        .stat-card.danger::before { background: var(--admin-danger); }
+        
+        .stat-icon {
+            font-size: 3rem;
+            color: var(--admin-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card.success .stat-icon { color: var(--admin-success); }
+        .stat-card.warning .stat-icon { color: var(--admin-warning); }
+        .stat-card.danger .stat-icon { color: var(--admin-danger); }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--admin-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .admin-content {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .content-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--admin-dark);
+            margin: 0;
+        }
+        
+        .content-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-primary-admin {
+            background: var(--admin-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary-admin:hover {
+            background: var(--admin-secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary-admin {
+            background: var(--white);
+            color: var(--admin-primary);
+            border: 2px solid var(--admin-primary);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-secondary-admin:hover {
+            background: var(--admin-primary);
+            color: var(--white);
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .admin-table th {
+            background: var(--admin-light);
+            font-weight: 600;
+            color: var(--admin-dark);
+        }
+        
+        .admin-table tr:hover {
+            background: rgba(233, 30, 99, 0.05);
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.pending {
+            background: var(--admin-warning);
+            color: var(--white);
+        }
+        
+        .status-badge.processing {
+            background: var(--admin-info);
+            color: var(--white);
+        }
+        
+        .status-badge.completed {
+            background: var(--admin-success);
+            color: var(--white);
+        }
+        
+        .status-badge.cancelled {
+            background: var(--admin-danger);
+            color: var(--white);
+        }
+        
+        .status-badge.active {
+            background: var(--admin-success);
+            color: var(--white);
+        }
+        
+        .status-badge.inactive {
+            background: var(--admin-danger);
+            color: var(--white);
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-action {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-action:hover {
+            background: var(--admin-light);
+        }
+        
+        .btn-action.edit { color: var(--admin-info); }
+        .btn-action.delete { color: var(--admin-danger); }
+        .btn-action.view { color: var(--admin-success); }
+        
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filters select,
+        .filters input {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--white);
+            font-size: 0.875rem;
+        }
+        
+        .filters input {
+            flex: 1;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--white);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination button:hover {
+            background: var(--admin-primary);
+            color: var(--white);
+            border-color: var(--admin-primary);
+        }
+        
+        .pagination button.active {
+            background: var(--admin-primary);
+            color: var(--white);
+            border-color: var(--admin-primary);
+        }
+        
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-main {
+                margin-left: 0;
+            }
+            
+            .admin-stats {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .admin-table {
+                font-size: 0.875rem;
+            }
+            
+            .admin-table th,
+            .admin-table td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-header">
+                <div class="admin-logo">
+                    <i class="fas fa-gem"></i>
+                    <div>
+                        <h1>SLEEM</h1>
+                        <span>Admin Panel</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="products.html"><i class="fas fa-box"></i> Produk</a></li>
+                    <li><a href="stock.html"><i class="fas fa-warehouse"></i> Stok</a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Pesanan</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customer</a></li>
+                    <li><a href="reports.html"><i class="fas fa-chart-line"></i> Laporan</a></li>
+                    <li><a href="invoice.html"><i class="fas fa-file-invoice"></i> Invoice</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Top Bar -->
+            <div class="admin-topbar">
+                <div class="admin-user">
+                    <div class="admin-user-avatar">A</div>
+                    <div class="admin-user-info">
+                        <h4>Administrator</h4>
+                        <p>admin@sleem.com</p>
+                    </div>
+                </div>
+                <div class="admin-actions">
+                    <button class="btn-admin" onclick="window.open('../index.html', '_blank')">
+                        <i class="fas fa-home"></i> View Store
+                    </button>
+                    <button class="btn-admin" onclick="adminLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Dashboard Stats -->
+            <div class="admin-stats">
+                <div class="stat-card primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-value" id="totalProducts">0</div>
+                    <div class="stat-label">Total Produk</div>
+                </div>
+                
+                <div class="stat-card success">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">Total Pesanan</div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" id="totalCustomers">0</div>
+                    <div class="stat-label">Total Customer</div>
+                </div>
+                
+                <div class="stat-card danger">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-value" id="totalRevenue">Rp 0</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+            </div>
+            
+            <!-- Recent Orders -->
+            <div class="admin-content">
+                <div class="content-header">
+                    <h2>Pesanan Terbaru</h2>
+                    <div class="content-actions">
+                        <button class="btn-secondary-admin" onclick="exportOrders()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button class="btn-primary-admin" onclick="window.location.href='orders.html'">
+                            <i class="fas fa-eye"></i> Lihat Semua
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filters">
+                    <input type="text" placeholder="Cari pesanan..." id="orderSearch" onkeyup="searchOrders()">
+                    <select id="statusFilter" onchange="filterOrders()">
+                        <option value="">Semua Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <select id="dateFilter" onchange="filterOrders()">
+                        <option value="">Semua Tanggal</option>
+                        <option value="today">Hari Ini</option>
+                        <option value="week">Minggu Ini</option>
+                        <option value="month">Bulan Ini</option>
+                    </select>
+                </div>
+                
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Tanggal</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentOrdersTable">
+                        <!-- Orders will be loaded here -->
+                    </tbody>
+                </table>
+                
+                <div class="pagination">
+                    <button onclick="previousPage()">Previous</button>
+                    <button class="active">1</button>
+                    <button onclick="nextPage()">Next</button>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="admin-content" style="margin-top: 2rem;">
+                <div class="content-header">
+                    <h2>Quick Actions</h2>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <button class="btn-primary-admin" onclick="window.location.href='products.html'">
+                        <i class="fas fa-plus"></i> Tambah Produk
+                    </button>
+                    <button class="btn-primary-admin" onclick="window.location.href='stock.html'">
+                        <i class="fas fa-warehouse"></i> Kelola Stok
+                    </button>
+                    <button class="btn-primary-admin" onclick="window.location.href='reports.html'">
+                        <i class="fas fa-chart-line"></i> Lihat Laporan
+                    </button>
+                    <button class="btn-primary-admin" onclick="window.location.href='customers.html'">
+                        <i class="fas fa-users"></i> Customer Data
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Notification -->
+    <div id="notification" class="notification hidden">
+        <div class="notification-content">
+            <i class="fas fa-check"></i>
+            <span id="notificationMessage"></span>
+        </div>
+    </div>
+    
+    <script>
+        // Admin Dashboard JavaScript
+        let currentPage = 1;
+        let orders = [];
+        let products = [];
+        let customers = [];
+        
+        // Initialize Dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+            loadRecentOrders();
+        });
+        
+        // Load dashboard data
+        function loadDashboardData() {
+            loadOrdersFromStorage();
+            loadProductsFromStorage();
+            loadCustomersFromStorage();
+            updateDashboardStats();
+        }
+        
+        // Load orders from localStorage
+        function loadOrdersFromStorage() {
+            const saved = localStorage.getItem('sleemOrders');
+            if (saved) {
+                orders = JSON.parse(saved);
+            } else {
+                // Demo orders
+                orders = [
+                    {
+                        id: 'ORD-001',
+                        customerName: 'Sarah Putri',
+                        date: '2024-03-27',
+                        total: 450000,
+                        status: 'pending',
+                        items: 2
+                    },
+                    {
+                        id: 'ORD-002',
+                        customerName: 'Maya Sari',
+                        date: '2024-03-26',
+                        total: 680000,
+                        status: 'processing',
+                        items: 3
+                    },
+                    {
+                        id: 'ORD-003',
+                        customerName: 'Rina Wijaya',
+                        date: '2024-03-25',
+                        total: 320000,
+                        status: 'completed',
+                        items: 1
+                    }
+                ];
+            }
+        }
+        
+        // Load products from localStorage
+        function loadProductsFromStorage() {
+            const saved = localStorage.getItem('sleemProducts');
+            if (saved) {
+                products = JSON.parse(saved);
+            } else {
+                products = 8; // Demo count
+            }
+        }
+        
+        // Load customers from localStorage
+        function loadCustomersFromStorage() {
+            const saved = localStorage.getItem('sleemCustomers');
+            if (saved) {
+                customers = JSON.parse(saved);
+            } else {
+                customers = 2; // Demo count
+            }
+        }
+        
+        // Update dashboard stats
+        function updateDashboardStats() {
+            document.getElementById('totalProducts').textContent = products.length || products;
+            document.getElementById('totalOrders').textContent = orders.length;
+            document.getElementById('totalCustomers').textContent = customers.length || customers;
+            
+            const totalRevenue = orders.reduce((total, order) => total + order.total, 0);
+            document.getElementById('totalRevenue').textContent = `Rp ${totalRevenue.toLocaleString('id-ID')}`;
+        }
+        
+        // Load recent orders
+        function loadRecentOrders() {
+            const tbody = document.getElementById('recentOrdersTable');
+            tbody.innerHTML = '';
+            
+            const recentOrders = orders.slice(0, 5);
+            
+            recentOrders.forEach(order => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${formatDate(order.date)}</td>
+                    <td>Rp ${order.total.toLocaleString('id-ID')}</td>
+                    <td><span class="status-badge ${order.status}">${order.status}</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-action view" onclick="viewOrder('${order.id}')" title="View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action edit" onclick="updateOrderStatus('${order.id}')" title="Update Status">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+        
+        // Search orders
+        function searchOrders() {
+            const searchTerm = document.getElementById('orderSearch').value.toLowerCase();
+            const filteredOrders = orders.filter(order => 
+                order.id.toLowerCase().includes(searchTerm) ||
+                order.customerName.toLowerCase().includes(searchTerm)
+            );
+            
+            displayOrders(filteredOrders);
+        }
+        
+        // Filter orders
+        function filterOrders() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+            
+            let filteredOrders = orders;
+            
+            if (statusFilter) {
+                filteredOrders = filteredOrders.filter(order => order.status === statusFilter);
+            }
+            
+            if (dateFilter) {
+                const today = new Date();
+                filteredOrders = filteredOrders.filter(order => {
+                    const orderDate = new Date(order.date);
+                    switch(dateFilter) {
+                        case 'today':
+                            return orderDate.toDateString() === today.toDateString();
+                        case 'week':
+                            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            return orderDate >= weekAgo;
+                        case 'month':
+                            return orderDate.getMonth() === today.getMonth() && 
+                                   orderDate.getFullYear() === today.getFullYear();
+                        default:
+                            return true;
+                    }
+                });
+            }
+            
+            displayOrders(filteredOrders);
+        }
+        
+        // Display orders
+        function displayOrders(ordersToDisplay) {
+            const tbody = document.getElementById('recentOrdersTable');
+            tbody.innerHTML = '';
+            
+            ordersToDisplay.forEach(order => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td>${formatDate(order.date)}</td>
+                    <td>Rp ${order.total.toLocaleString('id-ID')}</td>
+                    <td><span class="status-badge ${order.status}">${order.status}</span></td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="btn-action view" onclick="viewOrder('${order.id}')" title="View">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action edit" onclick="updateOrderStatus('${order.id}')" title="Update Status">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+            });
+        }
+        
+        // View order details
+        function viewOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                alert(`Order Details:\n\nID: ${order.id}\nCustomer: ${order.customerName}\nDate: ${order.date}\nTotal: Rp ${order.total.toLocaleString('id-ID')}\nStatus: ${order.status}`);
+            }
+        }
+        
+        // Update order status
+        function updateOrderStatus(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                const newStatus = prompt('Update status (pending/processing/completed/cancelled):', order.status);
+                if (newStatus && ['pending', 'processing', 'completed', 'cancelled'].includes(newStatus)) {
+                    order.status = newStatus;
+                    localStorage.setItem('sleemOrders', JSON.stringify(orders));
+                    loadRecentOrders();
+                    showNotification('Order status updated successfully');
+                }
+            }
+        }
+        
+        // Export orders
+        function exportOrders() {
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Order ID,Customer,Date,Total,Status\n"
+                + orders.map(o => `${o.id},${o.customerName},${o.date},${o.total},${o.status}`).join("\n");
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "orders_export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Orders exported successfully');
+        }
+        
+        // Pagination
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadRecentOrders();
+            }
+        }
+        
+        function nextPage() {
+            currentPage++;
+            loadRecentOrders();
+        }
+        
+        // Admin logout
+        function adminLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../login.html';
+            }
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            if (notification && messageElement) {
+                messageElement.textContent = message;
+                notification.className = 'notification';
+                
+                if (type === 'error') {
+                    notification.style.background = 'var(--admin-danger)';
+                } else if (type === 'warning') {
+                    notification.style.background = 'var(--admin-warning)';
+                } else {
+                    notification.style.background = 'var(--admin-success)';
+                }
+                
+                notification.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
